@@ -55,6 +55,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        coords: null,
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -79,11 +80,14 @@ class Game extends React.Component {
     if(calculateWinner(squares) || squares[i]) {
       return;
     }
+    // Determine the coordinates of the cell clicked
+    const coords = Math.trunc(i / 3) + ', ' + (i % 3);
     squares[i] = this.state.xIsNext ? 'X' : 'O';
+    // Update the state with the changes
     this.setState({
-        history: history.concat([{squares: squares,}]),
-        xIsNext: !this.state.xIsNext,
-        stepNumber: history.length,
+      history: history.concat([{squares: squares, coords: coords}]),
+      xIsNext: !this.state.xIsNext,
+      stepNumber: history.length,
     });
   }
 
@@ -102,13 +106,24 @@ class Game extends React.Component {
     }
 
     // Generate a list of previous moves
+    // 'step' is the array item, and 'move' is the array index
     const moves = history.map((step, move) => {
-      const desc = move ? 'Go to move #' + move : 'Go to game start';
-      return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      )
+      const desc = move ?
+        'Go to move #' + move + " - (" + step.coords + ")" :
+        'Go to game start';
+      if(move === this.state.stepNumber) {
+        return (
+          <li key={move}>
+            <button onClick={() => this.jumpTo(move)}><b> {desc} </b></button>
+          </li>
+        )
+      } else {
+        return (
+          <li key={move}>
+            <button onClick={() => this.jumpTo(move)}> {desc} </button>
+          </li>
+        )
+      }
     });
 
     return (
