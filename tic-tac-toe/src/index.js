@@ -91,6 +91,24 @@ class Game extends React.Component {
     });
   }
 
+  createStepList(history) {
+    // 'step' is the array item, and 'move' is the array index
+    return history.map((step, move) => {
+        const desc = move ?
+          'Go to move #' + move + " - (" + step.coords + ")" :
+          'Go to game start';
+        const format_desc = (move === this.state.stepNumber) ?
+          // Use JSX to format the content
+          <b>{desc}</b> :
+          desc;
+        return (
+          <li key={move}>
+            <button onClick={() => this.jumpTo(move)}> {format_desc} </button>
+          </li>
+        )
+    });
+  }
+
   render() {
     // Get a direct reference to the current board
     const history = this.state.history;
@@ -98,33 +116,12 @@ class Game extends React.Component {
 
     // Determine if the game has finished
     const winner = calculateWinner(current.squares);
-    let status;
-    if(winner) {
-      status = 'Winner is : ' + winner;
-    } else {
-      status = 'Next player: ' + (this.props.xIsNext ? 'X' : 'O');
-    }
+    const status = winner ?
+      'Winner is : ' + winner :
+      'Next player: ' + (this.props.xIsNext ? 'X' : 'O');
 
     // Generate a list of previous moves
-    // 'step' is the array item, and 'move' is the array index
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move + " - (" + step.coords + ")" :
-        'Go to game start';
-      if(move === this.state.stepNumber) {
-        return (
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}><b> {desc} </b></button>
-          </li>
-        )
-      } else {
-        return (
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}> {desc} </button>
-          </li>
-        )
-      }
-    });
+    const moves = this.createStepList(history);
 
     return (
       <div className="game">
