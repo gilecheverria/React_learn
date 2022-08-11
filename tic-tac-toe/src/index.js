@@ -20,30 +20,28 @@ function Square(props) {
 }
 
 class Board extends React.Component {
- renderSquare(i) {
+  renderSquare(i) {
+    // A key must be provided when using map to generate elements
     return (<Square value={this.props.squares[i]}
+                    key={i}
                     onClick={() => this.props.onClick(i)} />
     );
   }
 
+  makeRow(rowIndex) {
+    const cellIndices = [3 * rowIndex, 3 * rowIndex + 1, 3 * rowIndex + 2]
+    return (cellIndices.map((cell) => this.renderSquare(cell)));
+  }
+
   render() {
+    // A key must be provided when using map to generate elements
+    const matrix = [0, 1, 2].map((idx) =>
+        <div key={idx} className="board-row">
+          {this.makeRow(idx)}
+        </div>)
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {matrix}
       </div>
     );
   }
