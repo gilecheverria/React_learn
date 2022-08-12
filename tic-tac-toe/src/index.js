@@ -29,7 +29,7 @@ class Board extends React.Component {
   }
 
   makeRow(rowIndex) {
-    const cellIndices = [3 * rowIndex, 3 * rowIndex + 1, 3 * rowIndex + 2]
+    const cellIndices = [3 * rowIndex, 3 * rowIndex + 1, 3 * rowIndex + 2];
     return (cellIndices.map((cell) => this.renderSquare(cell)));
   }
 
