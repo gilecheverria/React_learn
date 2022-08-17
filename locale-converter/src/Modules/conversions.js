@@ -11,7 +11,7 @@ function grade_to_letter(grade) {
     letter = 'A';
   } else if(grade >= 90) {
     letter = 'A-';
-  } else if(grade >= 97) {
+  } else if(grade >= 87) {
     letter = 'B+';
   } else if(grade >= 83) {
     letter = 'B';
@@ -52,4 +52,4 @@ function format_line([id, name, mat, date, grade]) {
   return newLine;
 }
 
-export {grade_to_letter, date_to_american, format_line};
+export {grade_to_letter, date_to_american, remove_surname, format_line};
