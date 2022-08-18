@@ -37,7 +37,7 @@ function date_to_american(date) {
 }
 
 function remove_surname(fullName) {
-  const [name, surname1, surname2] = fullName.split(' ');
+  const [name, surname1, ] = fullName.split(' ');
   return [name, surname1].join(' ');
 }
 
