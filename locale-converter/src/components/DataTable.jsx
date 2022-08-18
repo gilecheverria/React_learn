@@ -12,7 +12,7 @@ import '../App.css';
 function DataTable({tableRows, values}) {
   // Contents table
   return (
-    <table className="Data-table">
+    <table className="Data-table" data-testid='dataTable'>
       <thead className="Data-header">
         <tr>
           {tableRows.map((row, index) => {
