@@ -9,3 +9,9 @@ Applications to learn about React
 - https://www.testim.io/blog/best-unit-testing-framework-for-javascript/
 - https://jestjs.io/
 - https://www.cypress.io/
+
+Simple unit tests:
+- https://jestjs.io/docs/expect
+
+Testing components
+- https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
