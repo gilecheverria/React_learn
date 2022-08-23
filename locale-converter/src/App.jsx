@@ -9,6 +9,7 @@
 import './App.css';
 import { useState } from 'react';
 import FileForm from './components/FileForm'
+import RecordForm from './components/RecordForm'
 import DataDisplay from './components/DataDisplay'
 
 function App() {
@@ -26,6 +27,13 @@ function App() {
       {/* File uploader */}
       <FileForm
         setTableRows={setTableRows}
+        setValues={setValues}
+        setNewValues={setNewValues}
+      />
+      {/* Add new users */}
+      <RecordForm
+        values={values}
+        newValues={newValues}
         setValues={setValues}
         setNewValues={setNewValues}
       />
