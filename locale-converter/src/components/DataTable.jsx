@@ -9,10 +9,10 @@
 
 import '../App.css';
 
-function DataTable({tableRows, values}) {
+function DataTable({tableRows, values, id}) {
   // Contents table
   return (
-    <table className="Data-table" data-testid='dataTable'>
+    <table className="Data-table" data-testid={id}>
       <thead className="Data-header">
         <tr>
           {tableRows.map((row, index) => {
