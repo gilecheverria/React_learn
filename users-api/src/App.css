@@ -62,3 +62,14 @@ th, td {
 .Data-values {
   text-align: left;
 }
+
+.RecordForm {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  background-color: #008888;
+  display: flex;
+  align-items: stretch;
+  align-content: center;
+  width: 40%;
+}

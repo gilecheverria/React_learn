@@ -9,9 +9,15 @@
 import '../App.css';
 
 function DataTable({data, id}) {
-  console.log("DATA: " + data);
-  const headers = Object.keys(data[0]);
-  console.log("HEADERS: " + headers);
+  let headers = [];
+  try {
+    headers = Object.keys(data[0]);
+    console.log("HEADERS: " + headers);
+  } catch(error) {
+    //console.log(error);
+    console.log("WAITING FOR DATA RETRIEVAL");
+  }
+
   // Contents table
   return (
     <table className="Data-table" data-testid={id}>

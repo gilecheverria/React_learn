@@ -10,53 +10,39 @@
 
 import '../App.css';
 import { useState } from 'react';
-import { format_line } from '../modules/conversions'
 
 function RecordForm(props) {
 
   const [newName, setName] = useState('');
-  const [newId, setId] = useState('');
-  const [newDate, setDate] = useState('');
-  const [newGrade, setGrade] = useState(0);
+  const [newSurname, setSurname] = useState('');
 
   function updateName(event) {
     setName(event.target.value);
   }
 
-  function updateId(event) {
-    setId(event.target.value);
-  }
-
-  function updateDate(event) {
-    setDate(event.target.value);
-  }
-
-  function updateGrade(event) {
-    setGrade(event.target.value);
-  }
-
-  function formatDate(date) {
-    const [year, month, day] = newDate.split('-');
-    return ([day, month, year].join('/'));
+  function updateSurname(event) {
+    setSurname(event.target.value);
   }
 
   function registerRecord(event) {
     event.preventDefault();
     // Find out what the next index should be
-    const lastIndex = props.values[props.values.length - 1][0];
+    const lastIndex = props.data[props.data.length - 1].id_users;
     const index = parseInt(lastIndex) + 1;
-    // Create the new records as lists
-    const newValue = [index, newName, newId, formatDate(newDate), newGrade];
-    const newResultValue = format_line(newValue);
+    // Create the new record as an object
+    const newRecord = {
+      'id_users': index,
+      'name': newName,
+      'surname': newSurname
+    };
     // Update the matrices in the App
-    props.setValues([...props.values, newValue]);
-    props.setNewValues([...props.newValues, newResultValue]);
+    props.setData([...props.data, newRecord]);
+    // Call the API to insert into the database
+    props.addNew(newName, newSurname);
 
-    // Reset the values in the form
+    // Reset the data in the form
     setName('');
-    setId('');
-    setDate('');
-    setGrade(0);
+    setSurname('');
   }
 
   return (
@@ -74,26 +60,12 @@ function RecordForm(props) {
           value={newName}
           onChange={updateName}
         />
-        <label>ID</label>
+        <label>Surname</label>
         <input
           type="text"
-          name="id"
-          value={newId}
-          onChange={updateId}
-        />
-        <label>Date</label>
-        <input
-          type="date"
-          name="date"
-          value={newDate}
-          onChange={updateDate}
-        />
-        <label>Grade</label>
-        <input
-          type="number"
-          name="grade"
-          value={newGrade}
-          onChange={updateGrade}
+          name="surname"
+          value={newSurname}
+          onChange={updateSurname}
         />
         <input type="submit" value="Submit" />
       </form>
