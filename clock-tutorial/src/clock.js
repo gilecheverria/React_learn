@@ -1,5 +1,11 @@
+/*
+ * A component to draw a self updating clock
+ * This demonstrates the use of state
+ *
+ * Gilberto Echeverria
+ */
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
 
 class Clock extends React.Component {

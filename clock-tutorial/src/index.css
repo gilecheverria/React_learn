@@ -11,3 +11,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.outer {
+  background-color: #AAAAAA;
+}
+
+/*
+ * The children of outer
+ */
+.outer > * {
+  display: inline-block;
+  vertical-align: top;
+  padding: 10px;
+  background-color:lightgreen;
+}
+
+.inner {
+  background-color: #4488AA;
+}
