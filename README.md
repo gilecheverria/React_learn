@@ -15,3 +15,7 @@ Simple unit tests:
 
 Testing components
 - https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
+
+
+## Tutorials
+- https://www.youtube.com/watch?v=b9eMGE7QtTk
