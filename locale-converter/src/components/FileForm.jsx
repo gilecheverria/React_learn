@@ -8,40 +8,20 @@
  * 2022-08-23
  */
 
-import '../App.css';
-import Papa from 'papaparse';
-import { format_line } from '../modules/conversions'
+import './Form.css';
+import { dataLoad } from '../modules/studentData'
+
 
 function FileForm(props) {
 
   const changeHandler = function(event) {
-    // Read the contents of a CSV file
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      // Function to process the data read
-      complete: (results) => {
-        const rowsArray = [];
-        const valuesArray = [];
-        const newValuesArray = [];
-
-        // Iterate over the data to separate the contents
-        results.data.map((item) => {
-          rowsArray.push(Object.keys(item));
-          valuesArray.push(Object.values(item));
-          newValuesArray.push(format_line(Object.values(item)));
-          // Return a null to silence a warning.
-          // The map result is not used in any case
-          return null;
-        });
-
-        // Store the values in the state
-        //setParseData(results.data);
-        props.setTableRows(rowsArray[0]);
-        props.setValues(valuesArray);
-        props.setNewValues(newValuesArray);
-      }
-    });
+    // Calling a function that does the reading
+    // Passing it the functions to modify the state and store the values read
+    dataLoad(
+      event.target.files[0],
+      props.setTableRows,
+      props.setValues
+    );
   };
 
   return (

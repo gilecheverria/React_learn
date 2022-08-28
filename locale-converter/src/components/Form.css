@@ -1,0 +1,24 @@
+.Input {
+  /* margin: 30px auto; */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  background-color: #BB6600;
+  width: 90%;
+}
+
+input {
+  display: block;
+  margin: 10px auto;
+}
+
+.RecordForm {
+  background-color: #BB6600;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  align-items: stretch;
+  align-content: center;
+  width: 90%;
+}

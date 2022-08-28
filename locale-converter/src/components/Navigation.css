@@ -1,0 +1,40 @@
+/*  GEF
+ *
+ * Aligning horizontally:
+ * https://developer.mozilla.org/es/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container
+ */
+
+.NavBar {
+  background-color: #00BB66;
+  padding: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: stretch;
+  align-content: center;
+  width: 90%;
+}
+
+nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+a {
+  font-weight: bold;
+}
+
+/* Set the properties for multiple states at once */
+a:link, a:visited {
+  background-color: white;
+  padding: 10px 20px;
+  color: #000000;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Set the properties for multiple states at once */
+a:hover, a:active {
+  background-color: black;
+  color: #FFFFFF;
+  text-decoration: underline;
+}

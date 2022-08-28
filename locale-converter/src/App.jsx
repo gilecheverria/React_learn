@@ -4,13 +4,16 @@
  * Gilberto Echeverria
  * 2022-08-17
  * 2022-08-23   Refactor into multiple components
+ * 2022-08-26   Add navigation using routes
  */
 
 import './App.css';
 import { useState } from 'react';
-import FileForm from './components/FileForm'
-import RecordForm from './components/RecordForm'
-import DataDisplay from './components/DataDisplay'
+import Navigation from './components/Navigation';
+import DataLoad from './components/DataLoad';
+import DataConvert from './components/DataConvert';
+import DataSearch from './components/DataSearch';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   // Storage for the CSV data
@@ -24,25 +27,37 @@ function App() {
 
   return (
     <div className="App">
-      {/* File uploader */}
-      <FileForm
-        setTableRows={setTableRows}
-        setValues={setValues}
-        setNewValues={setNewValues}
-      />
-      {/* Add new users */}
-      <RecordForm
-        values={values}
-        newValues={newValues}
-        setValues={setValues}
-        setNewValues={setNewValues}
-      />
-      {/* Data containers */}
-      <DataDisplay
-        tableRows={tableRows}
-        values={values}
-        newValues={newValues}
-      />
+      <h1>DATA PROCESSING DEMO</h1>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={
+          <DataLoad
+            setTableRows={setTableRows}
+            setValues={setValues}
+            setNewValues={setNewValues}
+          />
+          } />
+        <Route path="/convert" element={
+          <DataConvert
+            tableRows={tableRows}
+            setTableRows={setTableRows}
+            values={values}
+            setValues={setValues}
+            newValues={newValues}
+            setNewValues={setNewValues}
+          />
+          } />
+        <Route path="/search" element={
+          <DataSearch
+            tableRows={tableRows}
+            setTableRows={setTableRows}
+            values={values}
+            setValues={setValues}
+            newValues={newValues}
+            setNewValues={setNewValues}
+          />
+          } />
+      </Routes>
     </div>
   );
 }

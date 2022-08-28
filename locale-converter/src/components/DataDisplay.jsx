@@ -6,7 +6,7 @@
  * 2022-08-23
  */
 
-import '../App.css';
+import './DataTable.css';
 import DataTable from './DataTable'
 
 function DataDisplay(props) {

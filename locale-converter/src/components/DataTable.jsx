@@ -7,7 +7,7 @@
  * 2022-08-17
  */
 
-import '../App.css';
+import './DataTable.css';
 
 function DataTable({tableRows, values, id}) {
   // Contents table
