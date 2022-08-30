@@ -8,10 +8,7 @@
 import './Navigation.css';
 import { Link } from 'react-router-dom';
 
-function Navigation({tableRows, setTableRows,
-                      values, setValues,
-                      newValues, setNewValues}) {
-
+function Navigation() {
   return (
     <div className="NavBar">
       <nav>

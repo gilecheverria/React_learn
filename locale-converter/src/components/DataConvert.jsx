@@ -20,7 +20,7 @@ function DataConvert({tableRows, setTableRows,
   useEffect(() => {
     const newValuesArray = values.map((item) => format_line(item));
     setNewValues(newValuesArray);
-  }, [values]);
+  }, [values, setNewValues]);
 
   return (
     <div className="App">

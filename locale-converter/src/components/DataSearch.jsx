@@ -5,19 +5,20 @@
  * 2022-08-26
  */
 
-import '../App.css';
+import './DataSearch.css';
 import { useState } from 'react';
 import DataTable from './DataTable'
+//import DataTableFilter from './DataTableFilter'
 import FilterForm from './FilterForm'
 
 function DataSearch({tableRows, setTableRows,
                       values, setValues,
                       newValues, setNewValues}) {
-  // Create a list of filter objects
-  const [filters, setFilters] = useState([1]);
+  // Create a list of filter objects, with a default one
+  const [filters, setFilters] = useState([{category: tableRows[0], value: ""}]);
 
   return (
-    <div className="App">
+    <div className="DataSearch">
       <FilterForm
         categories={tableRows}
         filters={filters}
@@ -29,6 +30,14 @@ function DataSearch({tableRows, setTableRows,
         values={values}
         newValues={newValues}
       />
+      {/*
+      <DataTableFilter
+        tableRows={tableRows}
+        values={values}
+        newValues={newValues}
+        filters={filters}
+      />
+      */}
     </div>
   );
 }

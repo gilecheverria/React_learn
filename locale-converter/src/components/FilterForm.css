@@ -14,3 +14,22 @@
   justify-content: space-evenly;
   width: 90%;
 }
+
+.FilterRow {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.FilterButton {
+  padding: 20px;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.FilterArea {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  background-color: #BB6600;
+}

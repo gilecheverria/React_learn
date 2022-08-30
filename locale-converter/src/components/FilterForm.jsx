@@ -11,13 +11,13 @@ function FilterItem(props) {
 
   const categoryChangeHandler = function(event) {
     const filters = props.filters.slice();
-    filters[props.index] = event.target.value;
+    filters[props.index].category = event.target.value;
     props.setFilters(filters);
   };
 
   const valueChangeHandler = function(event) {
     const filters = props.filters.slice();
-    filters[props.index] = event.target.value;
+    filters[props.index].value = event.target.value;
     props.setFilters(filters);
   };
 
@@ -49,26 +49,46 @@ function FilterForm({categories, filters, setFilters}) {
     for (const filter of filters) {
       console.log(filter);
     }
+  }
 
+  function addFilter() {
+    const newFilter = {category: "Index", value: ""};
+    setFilters([...filters, newFilter]);
+  }
+
+  function delFilter(index) {
+    // Can never remove all filters
+    if (index > 0) {
+      // Make a copy of the original list
+      const tempFilters = [...filters];
+      tempFilters.splice(index, 1);
+      setFilters(tempFilters);
+    }
   }
 
   const form_id = 'filterForm';
 
   return (
-    <div className="Input">
+    <div className="FilterArea">
       <h2>Select filter categories </h2>
       <form onSubmit={updateSearch}>
-
-
-        {/*filters.map((filter, index) => {
-          return <FilterItem
-            form={form_id}
-            index={filter}
-            key={index}
-            categories={categories}
-          />
-        })*/}
-        <input type="submit" value="Submit" />
+        {/* Show each filter in a different row */}
+        {filters.map((filter, index) => {
+          return (
+            <div className="FilterRow">
+              <FilterItem
+                form={form_id}
+                index={index}
+                key={index}
+                categories={categories}
+                filters={filters}
+                setFilters={setFilters}
+              />
+              <button className="FilterButton" onClick={addFilter}>+</button>
+              <button className="FilterButton" onClick={() => delFilter(index)}>-</button>
+            </div>);
+        })}
+        <input type="submit" value="Submit" className="FilterButton" />
       </form>
     </div>
   );
