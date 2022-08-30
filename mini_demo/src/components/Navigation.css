@@ -1,7 +1,28 @@
 nav {
-  display: flex;
+  display: table;
+  margin: 0 auto;
+  background-color: #22AAAA;
 }
 
-li {
+ul#horizontal-list {
+  min-width: 800px;
+  list-style: none;
+  /* padding-top: 20px; */
+}
+ul#horizontal-list li {
+  display: inline;
   padding: 10px;
+}
+
+a {
+  font-weight: bold;
+}
+
+a:link, a:visited {
+  color: #000000;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  text-decoration: underline;
 }

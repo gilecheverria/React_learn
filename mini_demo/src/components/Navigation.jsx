@@ -11,7 +11,7 @@ import './Navigation.css';
 function Navigation () {
     return (
         <nav>
-            <ul>
+            <ul id="horizontal-list">
                 <li><Link to="/login">Login</Link></li>
                 <li><Link to="/newFile">New File</Link></li>
                 <li><Link to="/search">Search</Link></li>
