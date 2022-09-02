@@ -1,5 +1,12 @@
 .FilterItem {
+  margin: 4px;
   padding: 5px;
   width: 30%;
   background-color: #22AAAA;
+  /* Rounded borders */
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px 1px #AAAAAA;
+  /* Center the div */
+  margin-left: auto;
+  margin-right: auto;
 }

@@ -3,6 +3,9 @@
  *
  * Gilberto Echeverria
  * 2022-08-29
+ * 2022-09-01   Fixed the API call:
+ *              - Add proxy configuration to package.json
+ *              - Use a different endpoint from '/'
  */
 
 import './App.css';
@@ -15,10 +18,33 @@ import NewFile from './components/NewFile.jsx';
 import Search from './components/Search.jsx';
 import DataDisplay from './components/DataDisplay.jsx';
 // State for data shared across the whole application
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [name, setName] = useState('');
+  const [data, setData] = useState([]);
+
+  async function getAllUsers() {
+    try {
+      const response = await fetch('/api/docs',
+                                   {mode:'cors'});
+      console.log("RESPONSE: " + response);
+      const data = await response.json();
+      //const data = JSON.stringify(response);
+      console.log("DATA RECEIVED: " + {data});
+      setData(data);
+    } catch(error) {
+      console.log("ERROR at 'getAllUsers'");
+      console.log(error);
+      return [];
+    }
+  }
+
+  // Fetch the data when the page loads
+  useEffect(() => {
+    getAllUsers();
+  }, [])
+
 
   return (
     <div className="App">
@@ -28,7 +54,7 @@ function App() {
         <Route path="/login" element={<Login setName={setName} />} />
         <Route path="/newFile" element={<NewFile name={name} />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/display" element={<DataDisplay />} />
+        <Route path="/display" element={<DataDisplay data={data} />} />
       </Routes>
     </div>
   );

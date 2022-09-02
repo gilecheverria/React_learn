@@ -25,8 +25,10 @@ function Search () {
         <div>
             <h1>Search page</h1>
             <form>
-                <button className="FilterButton" onClick={addFilter}>+</button>
-                <button className="FilterButton" onClick={delFilter}>-</button>
+                <div className="Buttons">
+                    <button className="FilterButton" onClick={addFilter}>+</button>
+                    <button className="FilterButton" onClick={delFilter}>-</button>
+                </div>
                 {filters.map( (filter, index) =>
                 <FilterItem
                     key={index}

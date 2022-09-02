@@ -1,5 +1,6 @@
 import DataTable from './DataTable.jsx';
 
+/*
 const sample_data = [
   {
     _id: "630e388fcf116465715ead2a",
@@ -35,12 +36,13 @@ const sample_data = [
     type: 'movie'
   }
 ];
+*/
 
 // Should receive 'data' as a list of objects (JSON)
 // This is the same format as MongoDB will use
-function DataDisplay () {
+function DataDisplay ({data}) {
 
-    const data = sample_data;
+    //const data = sample_data;
 
     const headers = Object.keys(data[0])
     const values = data.map(item => Object.values(item))
