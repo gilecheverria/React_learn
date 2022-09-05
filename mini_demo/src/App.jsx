@@ -14,7 +14,7 @@ import { Routes, Route } from 'react-router-dom';
 // Custom components
 import Navigation from './components/Navigation.jsx';
 import Login from './components/Login.jsx';
-import NewFile from './components/NewFile.jsx';
+import NewFileForm from './components/NewFileForm.jsx';
 import Search from './components/Search.jsx';
 import DataDisplay from './components/DataDisplay.jsx';
 // State for data shared across the whole application
@@ -52,7 +52,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login setName={setName} />} />
         <Route path="/login" element={<Login setName={setName} />} />
-        <Route path="/newFile" element={<NewFile name={name} />} />
+        <Route path="/newFile" element={<NewFileForm name={name} />} />
         <Route path="/search" element={<Search />} />
         <Route path="/display" element={<DataDisplay data={data} />} />
       </Routes>
