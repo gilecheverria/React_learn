@@ -29,15 +29,36 @@ app.listen(port, () => {
 });
 
 app.get('/api/docs', async (req, res) => {
-    console.log("RECEIVED A REQUEST");
-    // Filter to not receive the internal id
-    const cursor = coll.find({}, {projection: {_id: 0}});
-    const data = await cursor.toArray();
-    //console.log("RESULTS TO SEND: " + data);
-    res.json(data);
+    try {
+        console.log("REQUEST FOR ALL DOCS");
+        // Filter to not receive the internal id
+        const cursor = coll.find({}, {projection: {_id: 0}});
+        const data = await cursor.toArray();
+        //console.log("RESULTS TO SEND: " + data);
+        res.json(data);
+    } catch(error) {
+        res.status(500);
+        res.json(error);
+        console.log(error);
+    }
 });
 
-app.post('/api/docs', (req, res) => {
+app.post('/api/getdocs', async (req, res) => {
+    try {
+        console.log("REQUEST FOR FILTER: " + req.body);
+        // Filter to not receive the internal id
+        const cursor = coll.find(req.body, {projection: {_id: 0}});
+        const data = await cursor.toArray();
+        //console.log("RESULTS TO SEND: " + data);
+        res.json(data);
+    } catch(error) {
+        res.status(500);
+        res.json(error);
+        console.log(error);
+    }
+});
+
+app.post('/api/adddoc', (req, res) => {
     try {
         add_document(req.body);
         res.json({'message': "Data inserted correctly."});
