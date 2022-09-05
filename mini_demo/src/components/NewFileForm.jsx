@@ -8,6 +8,7 @@
 
 import { useReducer } from 'react';
 import './NewFileForm.css';
+import { addDocument } from '../modules/db_api.js';
 
 // Predefined list of subjects. This should come from the database
 const materias = ['penal', 'civil', 'judicial', 'amparo'];
@@ -37,30 +38,7 @@ function NewFileForm ({name}) {
         event.preventDefault();
         console.log("FORM DATA: ");
         console.log(formData);
-        addDocument();
-    }
-
-    // Send the data to Mongo using an API
-    async function addDocument() {
-        try {
-            const response = await fetch('/api/docs', {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json",
-                    "accept": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => response.json())
-                .then(response => {
-                    console.log(response)
-                })
-            console.log("addDocument response: " + response);
-            setFormData({ reset: true });
-        } catch(error) {
-            console.log("ERROR at 'addDocument'");
-            console.log(error);
-        }
+        addDocument(formData, setFormData);
     }
 
     // Function to activate the reducer

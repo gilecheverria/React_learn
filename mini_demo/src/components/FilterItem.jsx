@@ -19,7 +19,7 @@ function FilterItem ({categories, filters, setFilters, index}) {
             <label>Category: </label>
             <select onChange={setCategory}>
                 {categories.map(cat =>
-                    <option value={cat}>{cat}</option>
+                    <option value={cat} key={cat}>{cat}</option>
                 )}
             </select>
             <label>Value: </label>

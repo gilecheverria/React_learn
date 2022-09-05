@@ -3,8 +3,12 @@ import FilterItem from './FilterItem.jsx';
 import './Search.css';
 
 
+// Preset data
+// TODO: This should come from the DB
+const categories = ['Caso', 'Folio', 'Materia', 'Persona']
+//const materias = ['penal', 'civil', 'judicial', 'amparo'];
+
 function Search () {
-    const categories = ['Area', 'Juicio', 'Juzgado', 'Dirección']
 
     const [filters, setFilters] = useState([
         {category: 'Juicio', value: 'Fiscal'}
@@ -21,10 +25,18 @@ function Search () {
         setFilters(filters.slice(0, -1))
     }
 
+    function handleSubmit(event) {
+        event.preventDefault();
+        //let mongoFilter = filters.reduce(addField, {});
+        console.log("Current filters: " + JSON.stringify(filters));
+        //console.log("Mongo filters: " + JSON.stringify(mongoFilter));
+        //getFilteredDocuments({}, setData);
+    }
+
     return (
         <div>
             <h1>Search page</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="Buttons">
                     <button className="FilterButton" onClick={addFilter}>+</button>
                     <button className="FilterButton" onClick={delFilter}>-</button>
@@ -34,10 +46,11 @@ function Search () {
                     key={index}
                     categories={categories}
                     filters={filters}
-                    setFilters={filters}
+                    setFilters={setFilters}
                     index={index}
                 />
                 )}
+                <input type="submit" value="Submit" />
             </form>
         </div>
     );

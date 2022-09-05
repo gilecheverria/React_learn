@@ -19,32 +19,18 @@ import Search from './components/Search.jsx';
 import DataDisplay from './components/DataDisplay.jsx';
 // State for data shared across the whole application
 import { useState, useEffect } from 'react';
+// Functions for the database API
+import { getFilteredDocuments } from './modules/db_api.js';
 
 function App() {
   const [name, setName] = useState('');
   const [data, setData] = useState([]);
 
-  async function getAllUsers() {
-    try {
-      const response = await fetch('/api/docs',
-                                   {mode:'cors'});
-      console.log("RESPONSE: " + response);
-      const data = await response.json();
-      //const data = JSON.stringify(response);
-      console.log("DATA RECEIVED: " + {data});
-      setData(data);
-    } catch(error) {
-      console.log("ERROR at 'getAllUsers'");
-      console.log(error);
-      return [];
-    }
-  }
-
   // Fetch the data when the page loads
   useEffect(() => {
-    getAllUsers();
+    getFilteredDocuments({}, setData);
+    //getDocuments(setData);
   }, [])
-
 
   return (
     <div className="App">
