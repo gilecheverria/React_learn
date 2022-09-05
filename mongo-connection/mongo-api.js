@@ -23,18 +23,31 @@ let coll;
 
 app.use(express.json());
 
-app.get('/api/docs', async (req, res) => {
-    console.log("RECEIVED A REQUEST");
-    const cursor = coll.find({});
-    const data = await cursor.toArray();
-    console.log("RESULTS TO SEND: " + data);
-    res.json(data);
-})
-
 app.listen(port, () => {
     connectDB();
     console.log(`App listening on port ${port}`)
-})
+});
+
+app.get('/api/docs', async (req, res) => {
+    console.log("RECEIVED A REQUEST");
+    // Filter to not receive the internal id
+    const cursor = coll.find({}, {projection: {_id: 0}});
+    const data = await cursor.toArray();
+    //console.log("RESULTS TO SEND: " + data);
+    res.json(data);
+});
+
+app.post('/api/docs', (req, res) => {
+    try {
+        add_document(req.body);
+        res.json({'message': "Data inserted correctly."});
+        console.log("ADDED NEW DOCUMENT");
+    } catch(error) {
+        res.status(500);
+        res.json(error);
+        console.log(error);
+    }
+});
 
 function connectDB() {
     // Establish the connection
@@ -50,7 +63,7 @@ function connectDB() {
         db = client.db('learning');
         console.log(`Connected to Mongo ${url}`);
 
-        // Insert new data in a collection
+        // Define the collection to use
         coll = db.collection('docs');
     })
 }
@@ -64,13 +77,12 @@ async function get_data() {
     return data;
 }
 
-// TODO: This function does not work yet
-function add_record() {
-    /*
-        docs.insertOne({
-            caso: 11,
-            folio: 935,
-            materia: 'amparo'
-        }, (err, result) => {});
-        */
+// Add a new document into the collection
+// The document must be in JSON format
+function add_document(doc) {
+    coll.insertOne(doc, (err, result) => {
+        if(err) {
+            return console.log(err);
+        }
+    });
 }
