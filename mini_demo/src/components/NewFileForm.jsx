@@ -23,7 +23,10 @@ function formReducer(state, event) {
             persona: ''
         };
     }
-    return {...state, [event.name]: event.value};
+    return {...state,
+        [event.name]:
+        // Convert numerical values to number instead of string
+        (isNaN(event.value) ? event.value : Number(event.value) )};
 }
 
 // Function component to show a red asterisk
@@ -36,8 +39,7 @@ function NewFileForm ({name}) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log("FORM DATA: ");
-        console.log(formData);
+        console.log("FORM DATA: " + formData);
         addDocument(formData, setFormData);
     }
 

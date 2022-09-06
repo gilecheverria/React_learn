@@ -20,7 +20,8 @@ async function getDocuments(setData) {
   }
 }
 
-async function getFilteredDocuments(query_json, setData) {
+async function getFilteredDocuments(jsonQuery, setData) {
+  console.log("'getFilteredDocuments' QUERY: " + JSON.stringify(jsonQuery));
   try {
     await fetch('/api/getdocs', {
       method: "POST",
@@ -28,7 +29,7 @@ async function getFilteredDocuments(query_json, setData) {
         "content-type": "application/json",
         "accept": "application/json"
       },
-      body: JSON.stringify(query_json)
+      body: JSON.stringify(jsonQuery)
     })
       .then(response => response.json())
       .then(response => {
@@ -36,15 +37,16 @@ async function getFilteredDocuments(query_json, setData) {
         setData(response);
       })
   } catch(error) {
-    console.log("ERROR at 'addDocument'");
+    console.log("ERROR at 'getFilteredDocuments'");
     console.log(error);
   }
 }
 
 // Send the data to Mongo using an API
 async function addDocument(formData, setFormData) {
+  console.log("'addDocument' QUERY: " + JSON.stringify(formData));
   try {
-    const response = await fetch('/api/adddoc', {
+    await fetch('/api/adddoc', {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -54,9 +56,8 @@ async function addDocument(formData, setFormData) {
     })
       .then(response => response.json())
       .then(response => {
-        console.log(response)
+        console.log("addDocument response: " + response);
       })
-    console.log("addDocument response: " + response);
     setFormData({ reset: true });
   } catch(error) {
     console.log("ERROR at 'addDocument'");

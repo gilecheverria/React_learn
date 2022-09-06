@@ -39,7 +39,7 @@ function App() {
         <Route path="/" element={<Login setName={setName} />} />
         <Route path="/login" element={<Login setName={setName} />} />
         <Route path="/newFile" element={<NewFileForm name={name} />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/search" element={<Search setData={setData} />} />
         <Route path="/display" element={<DataDisplay data={data} />} />
       </Routes>
     </div>
