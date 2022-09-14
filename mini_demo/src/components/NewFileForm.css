@@ -2,3 +2,12 @@
   font-weight: bold;
   color: red;
 }
+
+/* Add spacing between form elements */
+.FileForm input, select {
+  margin-bottom: 1rem;
+}
+
+.FileForm label {
+  margin-right: 1rem;
+}

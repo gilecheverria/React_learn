@@ -9,6 +9,7 @@
 import { useReducer } from 'react';
 import './NewFileForm.css';
 import { addDocument } from '../modules/db_api.js';
+import DragDropFile from './DragDropFile.jsx';
 
 // Predefined list of subjects. This should come from the database
 const materias = ['penal', 'civil', 'judicial', 'amparo'];
@@ -55,7 +56,7 @@ function NewFileForm ({name}) {
     return (
         <div>
             <h1>Add new document</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="FileForm">
                 <label><Required />Caso:</label>
                 <input
                     type="number"
@@ -92,6 +93,7 @@ function NewFileForm ({name}) {
                 <br />
                 <input type="submit" value="Submit" />
             </form>
+            <DragDropFile />
         </div>
     );
 }

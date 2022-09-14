@@ -1,0 +1,64 @@
+/*
+ * Style for the Drag and drop area
+ *
+ * Units are relative to the size of the root element (document)
+ * https://www.sitepoint.com/understanding-and-using-rem-units-in-css/
+ *
+ * Gilberto Echeverria
+ * 2022-09-13
+ */
+
+#form-file-upload {
+  height: 16rem;
+  width: 28rem;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hide the default button of this input */
+#input-file-upload {
+  display: none;
+}
+
+#label-file-upload {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 4px;
+  border-radius: 1rem;
+  border-style: dashed;
+  border-color: #D0C0F0;
+  background-color: #E6E8EA;
+}
+
+#label-file-upload.drag-active {
+  background-color: #FFFFFFFF;
+}
+
+#drag-file-element {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+.upload-button {
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1rem;
+  border: none;
+  font-family: 'Oswald', sans-serif;
+  background-color: transparent;
+}
+
+.upload-button:hover {
+  text-decoration-line: underline;
+}
