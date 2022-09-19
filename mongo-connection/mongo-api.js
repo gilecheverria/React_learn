@@ -13,10 +13,10 @@
 
 const express = require('express');
 const app = express();
-const port = 5000;
-
 const MongoClient = require('mongodb').MongoClient;
+
 const url = 'mongodb://127.0.0.1:27017';
+const port = 5000;
 
 let db;
 let coll;

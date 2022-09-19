@@ -1,5 +1,5 @@
 /*
- * Simple exampe to connect to a local Mongo Database
+ * Simple example to connect to a local Mongo Database
  *
  * References:
  * https://attacomsian.com/blog/nodejs-mongodb-local-connection
