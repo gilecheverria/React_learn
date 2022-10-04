@@ -1,5 +1,17 @@
-import { useState } from 'react';
+/*
+ * Component to search for data and display the results
+ *
+ * TODO: Probably separate this into two components:
+ * - SearchForm
+ * - DataTable
+ *
+ * Gilberto Echeverria
+ * 2022-10-04
+ */
+
+import { useState, useEffect } from 'react';
 import FilterItem from './FilterItem.jsx';
+import DataTable from './DataTable.jsx';
 import './Search.css';
 // Functions for the database API
 import { getFilteredDocuments } from '../modules/db_api.js';
@@ -19,8 +31,17 @@ function addField(state, event) {
         (isNaN(event.value) ? event.value : Number(event.value) )};
 }
 
-function Search ({setData}) {
+// Helper function to identify when the response from the DB is empty
+// https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
+function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+}
 
+function Search () {
+    const [data, setData] = useState([{}]);
+    const [headers, setHeaders] = useState([]);
+    const [values, setValues] = useState([[]]);
+    // Default filters
     const [filters, setFilters] = useState([
         {category: 'Caso', value: '1'}
     ]);
@@ -44,13 +65,27 @@ function Search ({setData}) {
         getFilteredDocuments(mongoFilter, setData);
     }
 
+    // Update the headers and values when the data changes
+    useEffect(() => {
+        if (!is_empty(data)) {
+            setHeaders(Object.keys(data[0]));
+            setValues(data.map(item => Object.values(item)));
+        }
+    }, [data]);
+
     return (
         <div>
             <h1>Search page</h1>
             <form onSubmit={handleSubmit}>
                 <div className="Buttons">
-                    <button className="FilterButton" onClick={addFilter}>+</button>
-                    <button className="FilterButton" onClick={delFilter}>-</button>
+                    <button
+                        className="FilterButton"
+                        onClick={addFilter}
+                    >+</button>
+                    <button
+                        className="FilterButton"
+                        onClick={delFilter}
+                    >-</button>
                 </div>
                 {filters.map( (filter, index) =>
                 <FilterItem
@@ -63,6 +98,11 @@ function Search ({setData}) {
                 )}
                 <input type="submit" value="Submit" />
             </form>
+            <h1>Search results</h1>
+            {(!is_empty(data)) ? <DataTable
+                headers={headers}
+                values={values}
+            /> : <p>No data found</p>}
         </div>
     );
 }

@@ -7,8 +7,9 @@
  */
 
 import { useReducer } from 'react';
+//import { addDocument } from '../modules/db_api.js';
+import { addFileDocument } from '../modules/db_api.js';
 import './NewFileForm.css';
-import { addDocument } from '../modules/db_api.js';
 import DragDropFile from './DragDropFile.jsx';
 
 // Predefined list of subjects. This should come from the database
@@ -24,11 +25,14 @@ function formReducer(state, event) {
             persona: ''
         };
     }
+    //console.log("NEW ITEM IN FORM REDUCER: " + event.value);
     return {...state,
         [event.name]:
         // Convert numerical values to number instead of string
         (isNaN(event.value) ? event.value : Number(event.value) )};
 }
+
+
 
 // Function component to show a red asterisk
 function Required() {
@@ -36,12 +40,14 @@ function Required() {
 }
 
 function NewFileForm ({name}) {
-    const [formData, setFormData] = useReducer(formReducer, {});
+    const [formData, setFormData] = useReducer(formReducer,
+                                                {'materia': materias[0]});
 
     function handleSubmit(event) {
         event.preventDefault();
         console.log("FORM DATA: " + formData);
-        addDocument(formData, setFormData);
+        //addDocument(formData, setFormData);
+        addFileDocument(formData, setFormData);
     }
 
     // Function to activate the reducer
@@ -56,7 +62,13 @@ function NewFileForm ({name}) {
     return (
         <div>
             <h1>Add new document</h1>
-            <form onSubmit={handleSubmit} className="FileForm">
+            <form
+                onSubmit={handleSubmit}
+                // action="/api/addfile"
+                className="FileForm"
+                encType="multipart/form-data"
+                method="POST"
+            >
                 <label><Required />Caso:</label>
                 <input
                     type="number"
@@ -91,9 +103,10 @@ function NewFileForm ({name}) {
                     value={formData.persona || ''}
                     onChange={handleChange} />
                 <br />
+                <DragDropFile setFormData={setFormData} name="file_input"/>
+                <br />
                 <input type="submit" value="Submit" />
             </form>
-            <DragDropFile />
         </div>
     );
 }

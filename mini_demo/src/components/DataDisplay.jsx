@@ -1,4 +1,14 @@
+/*
+ * Display the table with the data recovered from the database
+ *
+ * Gilberto Echeverria
+ * 2022-10-04
+ */
+
+import { useState, useEffect } from 'react';
 import DataTable from './DataTable.jsx';
+// Functions for the database API
+import { getFilteredDocuments } from '../modules/db_api.js';
 
 /*
 const sample_data = [
@@ -40,12 +50,25 @@ const sample_data = [
 
 // Should receive 'data' as a list of objects (JSON)
 // This is the same format as MongoDB will use
-function DataDisplay ({data}) {
+function DataDisplay () {
+    const [data, setData] = useState([{}]);
+    const [headers, setHeaders] = useState([]);
+    const [values, setValues] = useState([[]]);
 
-    //const data = sample_data;
+    // Fetch the data when the page loads
+    useEffect(() => {
+        getFilteredDocuments({}, setData);
+        //getDocuments(setData);
+    }, []);
 
-    const headers = Object.keys(data[0])
-    const values = data.map(item => Object.values(item))
+    // Update the headers and values when the data changes
+    useEffect(() => {
+        setHeaders(Object.keys(data[0]));
+        setValues(data.map(item => Object.values(item)));
+    }, [data])
+
+    //const headers = Object.keys(data[0])
+    //const values = data.map(item => Object.values(item))
 
     return (
         <div>

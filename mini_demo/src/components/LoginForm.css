@@ -1,0 +1,51 @@
+/*
+Style for the login form
+
+*/
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.login-form__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.login-form__input {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+#form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 300px;
+  padding: 0 20px;
+  border-width: 2px;
+  background-color: #BBBBBB;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -13,7 +13,7 @@ import { useState } from 'react';
 import './DragDropFile.css';
 
 // Receive a function to store the file selected
-function DragDropFile({setFormData}) {
+function TestDragDrop({setFormData, name}) {
   const [dragActive, setDragActive] = useState(false);
 
   function uploadFile(file) {
@@ -65,18 +65,12 @@ function DragDropFile({setFormData}) {
       id="form-file-upload"
       onDragEnter={handleDrag}
     >
-      {/*
-    <form
-      id="form-file-upload"
-      onDragEnter={handleDrag}
-      onSubmit={handleSubmit}
-    >
-    */}
       <input
         type="file"
         id="input-file-upload"
         onChange={handleChange}
         accept="application/pdf"
+        name={name}
       />
       <label
         id="label-file-upload"
@@ -95,11 +89,8 @@ function DragDropFile({setFormData}) {
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
                         onDrop={handleDrop}></div> }
-      {/*
-    </form>
-    */}
     </div>
   );
 }
 
-export default DragDropFile;
+export default TestDragDrop;
