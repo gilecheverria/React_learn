@@ -16,6 +16,10 @@ Simple unit tests:
 Testing components
 - https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
 
+## Online development
+- https://codepen.io/
+- https://codesandbox.io/
+
 
 ## Tutorials
 - https://www.youtube.com/watch?v=b9eMGE7QtTk
