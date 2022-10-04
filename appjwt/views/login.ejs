@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        Pagina de registro
+    </head>
+    <body>
+        <h1>Acceso</h1>
+        <form action="/login" method="POST">
+            <p><input type="text" name="usuario" placeholder="Usuario" id="usuario" required></p>
+            <p><input type="password" name="password" id="password" required></p>
+            <p><input type="submit" value="Entrar"></p>
+        </form>
+        <form>
+            <button formaction="/registro">Registrarse</button>
+        </form>
+        <% if (msg && msg!=""){ %>
+            <p>Usuario o password incorrecto</p>
+        <% } %>
+    </body>
+</html>
