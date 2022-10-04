@@ -19,7 +19,6 @@ const url = 'mongodb://127.0.0.1:27017';
 const port = 5000;
 
 let db;
-let coll;
 
 app.use(express.json());
 
@@ -28,11 +27,26 @@ app.listen(port, () => {
     console.log(`App listening on port ${port}`)
 });
 
+app.post('/api/login', async(req, res) => {
+    console.log("Login request: ", req.body);
+    try {
+        let cursor = await db.collection('users').findOne(req.body,
+            { projection: { _id: 0, user: 1, name: 1 } });
+        const data = await cursor;
+        console.log("RESULTS TO SEND: " + data);
+        res.json(data);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+});
+
+
 app.get('/api/docs', async (req, res) => {
     try {
         console.log("REQUEST FOR ALL DOCS");
         // Filter to not receive the internal id
-        const cursor = coll.find({}, {projection: {_id: 0}});
+        const cursor = db.collection('docs').find({}, {projection: {_id: 0}});
         const data = await cursor.toArray();
         //console.log("RESULTS TO SEND: " + data);
         res.json(data);
@@ -45,12 +59,11 @@ app.get('/api/docs', async (req, res) => {
 
 app.post('/api/getdocs', async (req, res) => {
     try {
-        //console.log("REQUEST FOR FILTER: " + req.body);
         console.log("REQUEST FOR FILTER: " + JSON.stringify(req.body));
         // Filter to not receive the internal id
-        const cursor = coll.find(req.body, {projection: {_id: 0}});
+        const cursor = db.collection('docs').find(req.body, {projection: {_id: 0}});
         const data = await cursor.toArray();
-        //console.log("RESULTS TO SEND: " + data);
+        console.log("RESULTS TO SEND: " + data);
         res.json(data);
     } catch(error) {
         res.status(500);
@@ -86,9 +99,6 @@ function connectDB() {
         // Connect to a database
         db = client.db('learning');
         console.log(`Connected to Mongo ${url}`);
-
-        // Define the collection to use
-        coll = db.collection('docs');
     })
 }
 
@@ -104,7 +114,7 @@ async function get_data() {
 // Add a new document into the collection
 // The document must be in JSON format
 function add_document(doc) {
-    coll.insertOne(doc, (err, result) => {
+    db.collection('docs').insertOne(doc, (err, result) => {
         if(err) {
             return console.log(err);
         }
