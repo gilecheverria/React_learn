@@ -14,33 +14,28 @@ import { Routes, Route } from 'react-router-dom';
 // Custom components
 import Navigation from './components/Navigation.jsx';
 import Login from './components/Login.jsx';
-import NewFileForm from './components/NewFileForm.jsx';
+import Logout from './components/Logout.jsx';
+import TestFileUpload from './components/TestFileUpload.jsx';
+// import NewFileForm from './components/NewFileForm.jsx';
 import Search from './components/Search.jsx';
 import DataDisplay from './components/DataDisplay.jsx';
 // State for data shared across the whole application
-import { useState, useEffect } from 'react';
-// Functions for the database API
-import { getFilteredDocuments } from './modules/db_api.js';
+import { useState } from 'react';
 
 function App() {
-  const [name, setName] = useState('');
-  const [data, setData] = useState([]);
-
-  // Fetch the data when the page loads
-  useEffect(() => {
-    getFilteredDocuments({}, setData);
-    //getDocuments(setData);
-  }, [])
+  const [token, setToken] = useState('');
 
   return (
     <div className="App">
-      <Navigation />
+      <Navigation token={token} />
       <Routes>
-        <Route path="/" element={<Login setName={setName} />} />
-        <Route path="/login" element={<Login setName={setName} />} />
-        <Route path="/newFile" element={<NewFileForm name={name} />} />
-        <Route path="/search" element={<Search setData={setData} />} />
-        <Route path="/display" element={<DataDisplay data={data} />} />
+        <Route path="/" element={<Login setToken={setToken} />} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/logout" element={<Logout setToken={setToken} />} />
+        <Route path="/newFile" element={<TestFileUpload  />} />
+        {/* <Route path="/newFile" element={<NewFileForm  />} /> */}
+        <Route path="/search" element={<Search />} />
+        <Route path="/display" element={<DataDisplay />} />
       </Routes>
     </div>
   );
