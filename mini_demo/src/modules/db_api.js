@@ -4,6 +4,7 @@
  * Gilberto Echeverria
  */
 
+/* Request all the documents from the database */
 async function getDocuments(setData) {
   try {
     const response = await fetch('/api/docs',
@@ -20,6 +21,10 @@ async function getDocuments(setData) {
   }
 }
 
+/*
+ * Request documents using a specific query
+ * The query is a JSON object with the fields to filter
+ */
 async function getFilteredDocuments(jsonQuery, setData) {
   console.log("'getFilteredDocuments' QUERY: " + JSON.stringify(jsonQuery));
   try {
@@ -42,7 +47,7 @@ async function getFilteredDocuments(jsonQuery, setData) {
   }
 }
 
-// Send the data to Mongo using an API
+/* Store a new document in the database */
 async function addDocument(formData, setFormData) {
   console.log("'addDocument' QUERY: " + JSON.stringify(formData));
   try {
@@ -65,4 +70,50 @@ async function addDocument(formData, setFormData) {
   }
 }
 
-export { getDocuments, getFilteredDocuments, addDocument };
+/* Send the data to Mongo using an API, including the file to upload */
+async function addFileDocument(formData, setFormData) {
+  console.log("'addFileDocument' QUERY: " + JSON.stringify(formData));
+  try {
+    await fetch('/api/addfile', {
+      method: "POST",
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+      body: formData
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log("addFileDocument response: " + response);
+      })
+    setFormData({ reset: true });
+  } catch(error) {
+    console.log("ERROR at 'addFileDocument'");
+    console.log(error);
+  }
+}
+
+async function loginUser(formData, setToken, destination) {
+  console.log("'loginUser' QUERY: " + JSON.stringify(formData));
+  try {
+    await fetch('/api/login', {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "accept": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(response => response.json())
+      .then(response => {
+        console.log("loginUser response: " + JSON.stringify(response));
+        setToken(response);
+
+      })
+  } catch(error) {
+    console.log("ERROR at 'loginUser'");
+    console.log(error);
+  }
+}
+
+export { loginUser, getDocuments, getFilteredDocuments,
+  addDocument, addFileDocument };
