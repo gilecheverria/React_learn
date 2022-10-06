@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <h1>Creación de usuario </h1>
+        <form action="/agregarUsuario" method="POST">
+            <p>Ingrese usuario: <input type="text" name="usuario" required/></p>
+            <p>Ingrese password: <input type="password" name="pass" required/></p>
+            <p><label><h1>Roles</h1></label></p>
+            <% for(var i = 0; i < roles.length; i++) {%>
+                <p><input type="checkbox" name="<%= roles[i].rol %>"><label ><%= roles[i].rol %></label></input></p>
+            <% } %>
+            <p><input type="submit" value="Agregar Usuario"/></p>
+        </form>
+    </body>
+</html>

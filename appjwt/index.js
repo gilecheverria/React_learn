@@ -39,7 +39,7 @@ app.post("/login", (req, res)=>{
           res.cookie("token", token)
           res.redirect("/pagina")
         }else{
-          console.log("Error en password")
+          console.log("Error en password"+pass)
           res.render("login.ejs", {msg:"incorrecto"})
         }
       })

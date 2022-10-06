@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        table, th, td {
+          border:1px solid black;
+        }
+    </style>
+    <body>
+        <h1>Descarga de documentos <%= tipo %></h1>
+        <table>
+            <tr>
+                <td>Id</td>
+                <td>Usuario</td>
+                <td>Respuesta</td>
+            </tr>
+            <% for(var i = 0; i < documentos.length; i++) {%>
+                <tr>
+                  <td><%= documentos[i].nombre %></td>:
+                  <td><%= documentos[i].persona %></td>
+                  <td><form action="/descargar<%= tipo %>" method="POST">
+                    <input type="text" hidden="true" name="nombre" value="<%= documentos[i].nombre %>"/>
+                    <input type="submit"  value="Descargar" />
+                  </form></td>
+                </tr>
+              <% } %>
+        </table>
+    </body>
+</html>
