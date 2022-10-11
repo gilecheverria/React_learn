@@ -4,7 +4,9 @@
  * Gilberto Echeverria
  */
 
-/* Request all the documents from the database */
+/*
+ * Request all the documents from the database
+ */
 async function getDocuments(setData) {
   try {
     const response = await fetch('/api/docs',
@@ -47,52 +49,47 @@ async function getFilteredDocuments(jsonQuery, setData) {
   }
 }
 
-/* Store a new document in the database */
-async function addDocument(formData, setFormData) {
-  console.log("'addDocument' QUERY: " + JSON.stringify(formData));
-  try {
-    await fetch('/api/adddoc', {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "accept": "application/json"
-      },
-      body: JSON.stringify(formData)
-    })
-      .then(response => response.json())
-      .then(response => {
-        console.log("addDocument response: " + response);
-      })
-    setFormData({ reset: true });
-  } catch(error) {
-    console.log("ERROR at 'addDocument'");
-    console.log(error);
-  }
-}
-
-/* Send the data to Mongo using an API, including the file to upload */
-async function addFileDocument(formData, setFormData) {
+/*
+ * Send the data to Mongo using an API, including the file to upload
+ */
+async function addFileDocument(formData) {
   console.log("'addFileDocument' QUERY: " + JSON.stringify(formData));
-  console.log("'addFileDocument' caso: " + formData.get('caso'));
+  //console.log("'addFileDocument' caso: " + formData.get('caso'));
   try {
     await fetch('/api/addfile', {
       method: "POST",
-      headers: {
-        "content-type": "multipart/form-data",
-      },
       body: formData
     })
       .then(response => response.json())
       .then(response => {
         console.log("addFileDocument response: " + response);
       })
-    setFormData({ reset: true });
   } catch(error) {
     console.log("ERROR at 'addFileDocument'");
     console.log(error);
   }
 }
 
+/*
+ * Download a file indicated as an argument
+ */
+async function downloadFile(file) {
+  console.log("'downloadFile' QUERY: " + file);
+  const route = 'http://localhost:5000' + '/api/getfile/' + file;
+  console.log("ROUTE: " + route);
+  try {
+    await fetch(route, {
+      method: "GET"
+    })
+  } catch(error) {
+    console.log("ERROR at 'downloadFile'");
+    console.log(error);
+  }
+}
+
+/*
+ * Request to validate a username and password
+ */
 async function loginUser(formData, setToken, destination) {
   console.log("'loginUser' QUERY: " + JSON.stringify(formData));
   try {
@@ -116,5 +113,5 @@ async function loginUser(formData, setToken, destination) {
   }
 }
 
-export { loginUser, getDocuments, getFilteredDocuments, addDocument,
-         addFileDocument };
+export { loginUser, getDocuments, getFilteredDocuments, addFileDocument,
+  downloadFile };

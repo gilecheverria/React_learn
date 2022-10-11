@@ -15,7 +15,6 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/Navigation.jsx';
 import Login from './components/Login.jsx';
 import Logout from './components/Logout.jsx';
-// import TestFileUpload from './components/TestFileUpload.jsx';
 import NewFileForm from './components/NewFileForm.jsx';
 import Search from './components/Search.jsx';
 import DataDisplay from './components/DataDisplay.jsx';
@@ -32,7 +31,6 @@ function App() {
         <Route path="/" element={<Login setToken={setToken} />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/logout" element={<Logout setToken={setToken} />} />
-        {/* <Route path="/newFile" element={<TestFileUpload  />} /> */}
         <Route path="/newFile" element={<NewFileForm  />} />
         <Route path="/search" element={<Search />} />
         <Route path="/display" element={<DataDisplay />} />

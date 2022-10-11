@@ -6,6 +6,7 @@
  */
 
 import './DataTable.css';
+import { downloadFile } from '../modules/db_api.js';
 
 // Receive properties:
 // - headers: an array with the column titles
@@ -27,7 +28,23 @@ function DataTable({headers, values, id}) {
           return (
             <tr key={index}>
               {row.map((item, col) => {
-                return <td key={col}>{item}</td>;
+                if (col === 4) {
+                  const link = `/api/getfile/${item}`;
+                  return (
+                    <td key={col}>
+                      <a href={link}>Download</a>
+                    </td>
+                  );
+                  // return (
+                  //   <td key={col}>
+                  //     <button onClick={() => downloadFile(item)}>
+                  //       Download
+                  //     </button>
+                  //   </td>
+                  // );
+                } else {
+                  return <td key={col}>{item}</td>;
+                }
               })}
             </tr>
           );
