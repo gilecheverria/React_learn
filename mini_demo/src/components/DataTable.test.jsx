@@ -11,7 +11,7 @@ describe('DataTable Component', () => {
 
   const tableRows = ['HeadA', 'HeadB'];
   const values = [['a', '1'], ['b', '2']];
-  render(<DataTable tableRows={tableRows} values={values} id='dataTable' />);
+  render(<DataTable headers={tableRows} values={values} id='dataTable' />);
   const table = screen.getByTestId('dataTable');
 
   // Check if the table is displayed

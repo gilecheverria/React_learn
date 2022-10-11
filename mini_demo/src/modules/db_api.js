@@ -73,6 +73,7 @@ async function addDocument(formData, setFormData) {
 /* Send the data to Mongo using an API, including the file to upload */
 async function addFileDocument(formData, setFormData) {
   console.log("'addFileDocument' QUERY: " + JSON.stringify(formData));
+  console.log("'addFileDocument' caso: " + formData.get('caso'));
   try {
     await fetch('/api/addfile', {
       method: "POST",
@@ -115,5 +116,5 @@ async function loginUser(formData, setToken, destination) {
   }
 }
 
-export { loginUser, getDocuments, getFilteredDocuments,
-  addDocument, addFileDocument };
+export { loginUser, getDocuments, getFilteredDocuments, addDocument,
+         addFileDocument };

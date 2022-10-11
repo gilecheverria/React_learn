@@ -81,10 +81,12 @@ function Search () {
                     <button
                         className="FilterButton"
                         onClick={addFilter}
+                        data-testid="addFilter"
                     >+</button>
                     <button
                         className="FilterButton"
                         onClick={delFilter}
+                        data-testid="delFilter"
                     >-</button>
                 </div>
                 {filters.map( (filter, index) =>
@@ -94,6 +96,7 @@ function Search () {
                     filters={filters}
                     setFilters={setFilters}
                     index={index}
+                    data-testid="filterItem"
                 />
                 )}
                 <input type="submit" value="Submit" />

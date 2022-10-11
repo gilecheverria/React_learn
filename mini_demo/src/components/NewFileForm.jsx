@@ -8,9 +8,9 @@
 
 import { useReducer } from 'react';
 //import { addDocument } from '../modules/db_api.js';
-import { addFileDocument } from '../modules/db_api.js';
+//import { addFileDocument } from '../modules/db_api.js';
 import './NewFileForm.css';
-import DragDropFile from './DragDropFile.jsx';
+// import DragDropFile from './DragDropFile.jsx';
 
 // Predefined list of subjects. This should come from the database
 const materias = ['penal', 'civil', 'judicial', 'amparo'];
@@ -43,12 +43,28 @@ function NewFileForm ({name}) {
     const [formData, setFormData] = useReducer(formReducer,
                                                 {'materia': materias[0]});
 
+    /*
     function handleSubmit(event) {
         event.preventDefault();
         console.log("FORM DATA: " + formData);
-        //addDocument(formData, setFormData);
+        addDocument(formData, setFormData);
+    }
+    */
+
+    /*
+    function handleSubmitFile(event) {
+        event.preventDefault();
+        const fileFormData = new FormData();
+        fileFormData.append("file_input", formData.file_input);
+        fileFormData.append("caso", formData.caso);
+        fileFormData.append("folio", formData.folio);
+        fileFormData.append("materia", formData.materia);
+        fileFormData.append("persona", formData.persona);
+        console.log("FILE FORM DATA: " + fileFormData);
+        console.log("USING caso: " + formData.caso + " as " + fileFormData.get("caso"));
         addFileDocument(formData, setFormData);
     }
+    */
 
     // Function to activate the reducer
     // It organizes the data from the event so it can be correctly used
@@ -63,8 +79,8 @@ function NewFileForm ({name}) {
         <div>
             <h1>Add new document</h1>
             <form
-                onSubmit={handleSubmit}
-                // action="/api/addfile"
+                // onSubmit={handleSubmitFile}
+                action="/api/addfile"
                 className="FileForm"
                 encType="multipart/form-data"
                 method="POST"
@@ -75,7 +91,9 @@ function NewFileForm ({name}) {
                     min="0"
                     name="caso"
                     value={formData.caso || 0}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    required
+                />
                 <br />
                 <label><Required />Folio:</label>
                 <input
@@ -83,13 +101,16 @@ function NewFileForm ({name}) {
                     min="0"
                     name="folio"
                     value={formData.folio || 0}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    required
+                />
                 <br />
                 <label><Required />Materia:</label>
                 <select
                     name="materia"
                     onChange={handleChange}
                     value={formData.materia || 0}
+                    required
                 >
                     {materias.map((mat, index) => {
                         return (<option value={mat} key={index}>{mat}</option>);
@@ -101,9 +122,19 @@ function NewFileForm ({name}) {
                     type="text"
                     name="persona"
                     value={formData.persona || ''}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                />
                 <br />
-                <DragDropFile setFormData={setFormData} name="file_input"/>
+                {/* <DragDropFile setFormData={setFormData} name="file_input"/> */}
+                <label>Documento:</label>
+                <input
+                    type="file"
+                    name="file_input"
+                    value={formData.file_input || ''}
+                    accept="application/pdf"
+                    onChange={handleChange}
+                    required
+                />
                 <br />
                 <input type="submit" value="Submit" />
             </form>
