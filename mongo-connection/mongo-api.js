@@ -12,8 +12,14 @@
  */
 
 const express = require('express');
+const multer = require('multer');
+const body_parser = require('body-parser');
+const fs = require('fs');
+const crypto = require('crypto');
+const { MongoClient } = require('mongodb');
+
 const app = express();
-const MongoClient = require('mongodb').MongoClient;
+const upload = multer({ dest: '.temp/' });
 
 const url = 'mongodb://127.0.0.1:27017';
 const port = 5000;
@@ -72,11 +78,36 @@ app.post('/api/getdocs', async (req, res) => {
     }
 });
 
+app.post('/api/addfile', upload.single("file_input"), (req, res) => {
+    try {
+        console.log("UPLOAD request: ", req.file.filename, req.body.caso, req.body.folio);
+        //console.log("REQUEST FOR NEW DOC: " + req.body);
+        //console.log("REQUEST FOR NEW DOC: " + JSON.stringify(req.body));
+
+        // Prepare data for insertion into database
+        let fileName = req.body.caso + "_" + req.body.folio;
+        let item = req.body;
+        item = {...item, ...{filename: fileName }};
+        add_document(item, 'files_test');
+
+        let tempFile = __dirname + "/.temp/" + req.file.filename;
+        let storeFile = __dirname + "/.storage/" + fileName;
+        encrypt_file(tempFile, storeFile);
+
+        //res.render('/newFile');
+        res.json({'message': "Data inserted correctly."});
+    } catch(error) {
+        res.status(500);
+        res.json(error);
+        console.log(error);
+    }
+});
+
 app.post('/api/adddoc', (req, res) => {
     try {
         //console.log("REQUEST FOR NEW DOC: " + req.body);
         console.log("REQUEST FOR NEW DOC: " + JSON.stringify(req.body));
-        add_document(req.body);
+        add_document(req.body, 'docs');
         res.json({'message': "Data inserted correctly."});
         console.log("ADDED NEW DOCUMENT");
     } catch(error) {
@@ -113,10 +144,27 @@ async function get_data() {
 
 // Add a new document into the collection
 // The document must be in JSON format
-function add_document(doc) {
-    db.collection('docs').insertOne(doc, (err, result) => {
+function add_document(doc, collection) {
+    db.collection(collection).insertOne(doc, (err, result) => {
         if(err) {
             return console.log(err);
         }
     });
+}
+
+function encrypt_file(tempFile, storeFile) {
+    console.log("tempFile: " + tempFile);
+    console.log("storeFile: " + storeFile);
+    let inputFS = fs.createReadStream(tempFile);
+    let outputFS = fs.createWriteStream(storeFile);
+    let key = "abcabcabcabcabcabcabcabcabcabc12"
+    let iv = "abcabcabcabcabc1"
+    let cipher = crypto.createCipheriv("aes-256-cbc", key, iv)
+    inputFS.pipe(cipher).pipe(outputFS);
+    outputFS.on('finish', function() {
+        fs.unlink(tempFile, (err) => {
+            if (err) throw err;
+            console.log("File uploaded and deleted");
+        })
+    })
 }
