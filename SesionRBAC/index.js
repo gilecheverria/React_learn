@@ -50,22 +50,39 @@ async function subirArchivo(tipo, req, res, key, iv){
 }
 
 app.get("/cargartipo1", (req, res)=>{
-    res.render("cargar.ejs", {tipo: "tipo1", msg:""})
+    if(req.session.usuario && req.session.tipo1){
+        res.render("cargar.ejs", {tipo: "tipo1", msg:""})
+    }else{
+        res.redirect("/forbidden")
+    }
+    
 })
 
 
 app.post("/cargartipo1", uploads.single('archivo'), (req, res)=>{
-    let key="abcabcabcabcabcabcabcabcabcabc12"
-    let iv="abcabcabcabcabc1"
-    subirArchivo("tipo1",  req, res)
+    if(req.session.usuario && req.session.tipo1){
+        db.collection("roles").findOne({rol:"tipo1"}, (err, resultQuery)=>{
+            fs.readFile("testLab.key", (err, decryptKey)=>{
+                let key=Buffer.from(crypto.privateDecrypt(decryptKey, Buffer.from(resultQuery.llave, "hex")))
+                let iv=Buffer.from(crypto.privateDecrypt(decryptKey, Buffer.from(resultQuery.iv, "hex")))
+                subirArchivo("tipo1",  req, res, key, iv)
+            })
+        })
+    }else{
+        res.redirect("/forbidden")
+    }
 })
 
 
 app.get("/descargartipo1", (req, res)=>{
-    db.collection("tipo1").find({}).project({"nombre":1, "persona":1, "_id":0}).toArray( (err, result) => {
-        if (err) throw err;
-        res.render("descargar.ejs", {tipo:"tipo1",documentos: result})
-    });
+    if(req.session.usuario && req.session.tipo1){
+        db.collection("tipo1").find({}).project({"nombre":1, "persona":1, "_id":0}).toArray( (err, result) => {
+            if (err) throw err;
+            res.render("descargar.ejs", {tipo:"tipo1",documentos: result})
+        });
+    }else{
+        res.redirect("/forbidden")
+    }
 })
 
 async function descargarArchivo(tipo, req, res, key, iv){
@@ -89,12 +106,123 @@ async function descargarArchivo(tipo, req, res, key, iv){
 }
 
 app.post("/descargartipo1", (req, res)=>{
-    let key="abcabcabcabcabcabcabcabcabcabc12"
-    let iv="abcabcabcabcabc1"
-    descargarArchivo("tipo1", req, res, key, iv)
+    if(req.session.usuario && req.session.tipo1){
+        db.collection("roles").findOne({rol:"tipo1"}, (err, resultQuery)=>{
+            fs.readFile("testLab.key", (err, decryptKey)=>{
+                let key=Buffer.from(crypto.privateDecrypt(decryptKey, Buffer.from(resultQuery.llave, "hex")))
+                let iv=Buffer.from(crypto.privateDecrypt(decryptKey, Buffer.from(resultQuery.iv, "hex")))
+                descargarArchivo("tipo1", req, res, key, iv)
+            })
+        })
+        
+    }else{
+        res.redirect("/forbidden")
+    }
 })
 
 
+app.get("/setup", (req, res)=>{
+    res.render("setup.ejs")
+})
+
+app.post("/setup", (req, res)=>{
+    let pass=req.body.pass;
+    let roles=["tipo1", "tipo2", "tipo3"]
+    let privKey=fs.readFileSync("testLab.key")
+    for(i=0; i<roles.length; i++){
+        let key=crypto.publicEncrypt(privKey, Buffer.from(crypto.randomBytes(16).toString("hex"))).toString("hex")
+        let iv=crypto.publicEncrypt(privKey, Buffer.from(crypto.randomBytes(8).toString("hex"))).toString("hex")
+        let aInsertar={rol: roles[i], llave: key, iv: iv}
+        db.collection("roles").insertOne(aInsertar, (err, result)=>{
+            if (err) throw err;
+        })
+    }
+    bcrypt.hash(pass, 10, (err, hash)=>{
+        let agregarAdmin={usuario: "admin", password: hash, tipo1: false, tipo2: false, tipo3: false, admin:true}
+        db.collection("usuarios").insertOne(agregarAdmin, (err, result)=>{
+            if (err) throw err;
+        })
+    })
+    res.redirect("/")
+})
+
+app.get("/", (req, res)=>{
+    res.render("login.ejs", {msg:""})
+})
+
+app.get("/login", (req, res)=>{
+    res.render("login.ejs", {msg:""})
+})
+
+app.post("/login", (req, res)=>{
+    let user=req.body.usuario;
+    let pass=req.body.password;
+    db.collection("usuarios").findOne({usuario:user}, (err, resultQuery)=>{
+        if(resultQuery!=null){
+            bcrypt.compare(pass, resultQuery.password, (err, result)=>{
+                if(result){
+                    req.session.usuario=user;
+                    req.session.tipo1=resultQuery.tipo1;
+                    req.session.tipo2=resultQuery.tipo2;
+                    req.session.tipo3=resultQuery.tipo3;
+                    req.session.admin=resultQuery.admin;
+                    if(req.session.admin){
+                        res.redirect("/agregarUsuario")
+                    }else{
+                        res.redirect("/descargartipo1")
+                    }
+                }else{
+                    res.render("login.ejs", {msg: "usuario o password incorrecto"})
+                }
+            })
+        }else{
+            res.render("login.ejs", {msg: "usuario o password incorrecto"})
+        }
+    })
+})
+
+
+app.get("/logout", (req, res)=>{
+    req.session.destroy()
+    res.redirect("/")
+})
+
+app.get("/forbidden", (req, res)=>{
+    res.render("forbidden.ejs")
+})
+
+app.get("/agregarUsuario", (req, res)=>{
+    if(req.session.usuario&&req.session.admin){
+        db.collection("roles").find({}).project({"rol":1, "_id":0}).toArray((err, result)=>{
+            res.render("agregarUsuario.ejs", {roles:result})
+        })
+    }else{
+        res.redirect("/forbidden")
+    }
+})
+
+
+app.post("/agregarUsuario", (req, res)=>{
+    let user=req.body.usuario;
+    let pass=req.body.pass;
+    bcrypt.hash(pass, 10, (err, hash)=>{
+        let aAgregar={usuario:user, password: hash}
+        db.collection("roles").find({}).project({"rol":1, "_id":0}).toArray((err, rolesExistentes)=>{
+            for(i=0; i<rolesExistentes.length; i++){
+                if(req.body[rolesExistentes[i].rol]){
+                    aAgregar[rolesExistentes[i].rol]=true;
+                }else{
+                    aAgregar[rolesExistentes[i].rol]=false;
+                }
+            }
+        })
+        aAgregar[admin]=false
+        db.collection("usuarios").insertOne(aAgregar, (err, result)=>{
+            if (err) throw err;
+            res.redirect("/")
+        })
+    })
+})
 
 https.createServer({
     cert: fs.readFileSync('testLab.cer'),
