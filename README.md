@@ -23,3 +23,17 @@ Testing components
 
 ## Tutorials
 - https://www.youtube.com/watch?v=b9eMGE7QtTk
+
+
+## Useful components
+- https://react-hook-form.com/
+- https://react-dropzone.js.org/
+Rulo recommended:
+- https://formik.org/
+- https://redux.js.org/
+- https://redux-saga.js.org/
+
+
+## Linter (following a coding style)
+- https://eslint.org/
+- https://medium.com/@khriztianmoreno/configuraci%C3%B3n-de-eslint-usando-la-gu%C3%ADa-de-estilo-react-jsx-de-airbnb-c07ce3dcb072
