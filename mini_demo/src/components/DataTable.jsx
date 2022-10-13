@@ -6,7 +6,7 @@
  */
 
 import './DataTable.css';
-import { downloadFile } from '../modules/db_api.js';
+//import { downloadFile } from '../modules/db_api.js';
 
 // Receive properties:
 // - headers: an array with the column titles
@@ -29,10 +29,11 @@ function DataTable({headers, values, id}) {
             <tr key={index}>
               {row.map((item, col) => {
                 if (col === 4) {
-                  const link = `/api/getfile/${item}`;
+                  // Use the environment variable for the Backend URL
+                  const link = process.env.REACT_APP_API + `/api/getfile/${item}`;
                   return (
                     <td key={col}>
-                      <a href={link}>Download</a>
+                      <a href={link} download>Download</a>
                     </td>
                   );
                   // return (

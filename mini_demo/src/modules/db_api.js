@@ -9,7 +9,9 @@
  */
 async function getDocuments(setData) {
   try {
-    const response = await fetch('/api/docs',
+    const route = process.env.REACT_APP_API + '/api/docs/';
+    console.log("ROUTE: " + route);
+    const response = await fetch(route,
       {mode:'cors'});
     console.log("RESPONSE: " + response);
     const data = await response.json();
@@ -30,7 +32,9 @@ async function getDocuments(setData) {
 async function getFilteredDocuments(jsonQuery, setData) {
   console.log("'getFilteredDocuments' QUERY: " + JSON.stringify(jsonQuery));
   try {
-    await fetch('/api/getdocs', {
+    const route = process.env.REACT_APP_API + '/api/getdocs/';
+    console.log("ROUTE: " + route);
+    await fetch(route, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -56,7 +60,9 @@ async function addFileDocument(formData) {
   console.log("'addFileDocument' QUERY: " + JSON.stringify(formData));
   //console.log("'addFileDocument' caso: " + formData.get('caso'));
   try {
-    await fetch('/api/addfile', {
+    const route = process.env.REACT_APP_API + '/api/addfile';
+    console.log("ROUTE: " + route);
+    await fetch(route, {
       method: "POST",
       body: formData
     })
@@ -72,20 +78,35 @@ async function addFileDocument(formData) {
 
 /*
  * Download a file indicated as an argument
- */
 async function downloadFile(file) {
   console.log("'downloadFile' QUERY: " + file);
-  const route = 'http://localhost:5000' + '/api/getfile/' + file;
+  // Configure the location of the backend server in the .env file
+  console.log("ENV: " + JSON.stringify(process.env));
+  const route = process.env.REACT_APP_API + '/api/getfile/' + file;
   console.log("ROUTE: " + route);
   try {
     await fetch(route, {
       method: "GET"
     })
+      .then(response => response.blob())
+      .then(theBlob => {
+        console.log("RESULT FILE: " + JSON.stringify(theBlob));
+        // Create a link to download the file
+        const href = URL.createObjectURL(theBlob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = `${file}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
   } catch(error) {
     console.log("ERROR at 'downloadFile'");
     console.log(error);
   }
 }
+ */
 
 /*
  * Request to validate a username and password
@@ -93,7 +114,9 @@ async function downloadFile(file) {
 async function loginUser(formData, setToken, destination) {
   console.log("'loginUser' QUERY: " + JSON.stringify(formData));
   try {
-    await fetch('/api/login', {
+    const route = process.env.REACT_APP_API + '/api/login';
+    console.log("ROUTE: " + route);
+    await fetch(route, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -113,5 +136,9 @@ async function loginUser(formData, setToken, destination) {
   }
 }
 
-export { loginUser, getDocuments, getFilteredDocuments, addFileDocument,
-  downloadFile };
+export { loginUser,
+  getDocuments,
+  getFilteredDocuments,
+  addFileDocument,
+  //downloadFile
+};
