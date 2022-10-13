@@ -12,22 +12,39 @@
  */
 
 const express = require('express');
-const multer = require('multer');
-const body_parser = require('body-parser');
+const fileupload = require('express-fileupload');
+const cors = require('cors');
+
+// Encryption of the files uploaded
 const fs = require('fs');
 const crypto = require('crypto');
 const { MongoClient } = require('mongodb');
 
 const app = express();
-const upload = multer({ dest: '.temp/' });
 
 const url = 'mongodb://127.0.0.1:27017';
 const port = 5000;
 
 let db;
 
-app.use(express.json());
+// Configuration for encryption and decryption
+let key = "abcabcabcabcabcabcabcabcabcabc12"
+let iv = "abcabcabcabcabc1"
 
+// Configure the file upload middleware
+app.use(
+    fileupload({
+        //createParentPath: true,
+        useTempFiles : true,
+        tempFileDir : __dirname + '/.temp/'
+    }),
+);
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Start the server
 app.listen(port, () => {
     connectDB();
     console.log(`App listening on port ${port}`)
@@ -78,24 +95,40 @@ app.post('/api/getdocs', async (req, res) => {
     }
 });
 
-app.post('/api/addfile', upload.single("file_input"), (req, res) => {
+app.post('/api/addfile', async (req, res) => {
     try {
-        console.log("UPLOAD request: ", req.file.filename, req.body.caso, req.body.folio);
-        //console.log("REQUEST FOR NEW DOC: " + req.body);
-        //console.log("REQUEST FOR NEW DOC: " + JSON.stringify(req.body));
+        //console.log("UPLOAD request: ", req.files.file_input, req.body.caso, req.body.folio);
+        //console.log(req.files);
+        //console.log("Uploaded file: " + req.files.file_input.name);
+        //console.log("Uploaded file path: " + req.files.file_input.tempFilePath);
 
         // Prepare data for insertion into database
+        // Name of the file reference stored in the database
         let fileName = req.body.caso + "_" + req.body.folio;
         let item = req.body;
         item = {...item, ...{filename: fileName }};
-        add_document(item, 'files_test');
+        add_document(item, 'docs');
 
-        let tempFile = __dirname + "/.temp/" + req.file.filename;
+        // Prepare file names for Encryption
+        let tempFile = req.files.file_input.tempFilePath;
         let storeFile = __dirname + "/.storage/" + fileName;
         encrypt_file(tempFile, storeFile);
 
-        //res.render('/newFile');
         res.json({'message': "Data inserted correctly."});
+    } catch(error) {
+        res.status(500);
+        res.json(error);
+        console.log(error);
+    }
+});
+
+app.get('/api/getfile/:filename', (req, res) => {
+    try {
+        console.log("REQUEST FOR FILE: " + req.params.filename);
+        let fileName = req.params.filename;
+        let storeFile = __dirname + "/.storage/" + fileName;
+        let downFile = __dirname + "/.temp/" + fileName + ".pdf";
+        decrypt_file(storeFile, downFile, res);
     } catch(error) {
         res.status(500);
         res.json(error);
@@ -157,8 +190,6 @@ function encrypt_file(tempFile, storeFile) {
     console.log("storeFile: " + storeFile);
     let inputFS = fs.createReadStream(tempFile);
     let outputFS = fs.createWriteStream(storeFile);
-    let key = "abcabcabcabcabcabcabcabcabcabc12"
-    let iv = "abcabcabcabcabc1"
     let cipher = crypto.createCipheriv("aes-256-cbc", key, iv)
     inputFS.pipe(cipher).pipe(outputFS);
     outputFS.on('finish', function() {
@@ -166,5 +197,22 @@ function encrypt_file(tempFile, storeFile) {
             if (err) throw err;
             console.log("File uploaded and deleted");
         })
+    })
+}
+
+function decrypt_file(storeFile, downFile, res) {
+    let decipher = crypto.createDecipheriv("aes-256-cbc", key, iv)
+    let inputFS = fs.createReadStream(storeFile);
+    const outputFS = fs.createWriteStream(downFile);
+    inputFS.pipe(decipher).pipe(outputFS);
+    outputFS.on('finish', function() {
+      console.log("File decrypted: " + downFile);
+      res.download(downFile, (err) => {
+          if (err) throw err;
+          fs.unlink(downFile, (err) => {
+              if (err) throw err;
+              console.log("File processed and temp deleted");
+          })
+      })
     })
 }
