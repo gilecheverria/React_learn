@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+    <body>
+        <h1>Carga de documentos <%= tipo %></h1>
+        <form action="/cargar<%= tipo %>" enctype="multipart/form-data" method="POST"> 
+            <p><input type="text" name="nombre" placeholder="Nombre Archivo" /></p>
+            <p><input type="text" name="persona" placeholder="Persona"/></p>
+            <p><input type="file" name="archivo" /></p>
+            <input type="submit" value="Cargar Archivo"/>
+         </form>
+         <% if (msg && msg!="") { %>
+            <p><%= msg %></p>
+        <% } %> 
+    </body>
+</html>

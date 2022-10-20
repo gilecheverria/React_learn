@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            <input type="text" name="usuario" placeholder="usuario" required />
+            <input type="password" name="password" required />
+            <input type="submit" value="entrar"/>
+        </form>
+        <% if (msg && msg!="") { %>
+            <p><%= msg %></p>
+        <% } %> 
+    </body>
+</html>
