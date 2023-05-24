@@ -14,6 +14,7 @@ Simple unit tests:
 - https://jestjs.io/docs/expect
 
 Testing components
+- https://www.freecodecamp.org/news/how-to-write-unit-tests-in-react/
 - https://www.geeksforgeeks.org/how-to-test-react-components-using-jest/
 
 ## Online development
@@ -28,6 +29,8 @@ Testing components
 ## Useful components
 - https://react-hook-form.com/
 - https://react-dropzone.js.org/
+- https://mui.com/
+- https://www.npmjs.com/package/react-axios
 Rulo recommended:
 - https://formik.org/
 - https://redux.js.org/
