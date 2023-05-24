@@ -128,7 +128,13 @@ async function loginUser(formData, setToken, destination) {
       .then(response => {
         console.log("loginUser response: " + JSON.stringify(response));
         setToken(response);
-
+        // if (response !== null) {
+        //   console.log("LOGIN SUCCESS");
+        //   return JSON.JSON.stringify(response);
+        // } else {
+        //   console.log("LOGIN FAILED");
+        //   return null;
+        // }
       })
   } catch(error) {
     console.log("ERROR at 'loginUser'");

@@ -22,14 +22,14 @@ import DataDisplay from './components/DataDisplay.jsx';
 import { useState } from 'react';
 
 function App() {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState({});
 
   return (
     <div className="App">
       <Navigation token={token} />
       <Routes>
-        <Route path="/" element={<Login setToken={setToken} />} />
-        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/" element={<Login token={token} setToken={setToken} />} />
+        <Route path="/login" element={<Login token={token} setToken={setToken} />} />
         <Route path="/logout" element={<Logout setToken={setToken} />} />
         <Route path="/newFile" element={<NewFileForm  />} />
         <Route path="/search" element={<Search />} />

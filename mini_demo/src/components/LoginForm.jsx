@@ -3,21 +3,27 @@ Component to perform user login
 
 Made almost entirely with React Hooks and GitHub Copilot
 
+To navigate to a different page after login:
+https://www.makeuseof.com/redirect-user-after-login-react/
+
 Gilberto Echeverria
 2022-09-22
 */
 
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../modules/db_api.js';
 import './LoginForm.css';
 
-function LoginForm({setToken}) {
+function LoginForm({token, setToken}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    // Allow redirection to other pages
+    const navigate = useNavigate();
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
+        setToken({}) // Clear the token
         // Validate the form
         if (username === '' || password === '') {
             alert('Please fill in all the fields');
@@ -25,8 +31,13 @@ function LoginForm({setToken}) {
         }
         // Send the data to the server
         const formData = {'user': username, 'pwd': password};
-        loginUser(formData, setToken);
-        redirect("/display");
+        token = await loginUser(formData, setToken);
+        console.log("Received token: " + token);
+        if(token !== null) {
+            navigate('/display');
+        } else {
+            alert('Invalid username or password');
+        }
     }
 
     return (

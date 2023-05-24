@@ -30,7 +30,8 @@ function NewFileForm ({name}) {
         formData.append("materia", data.materia);
         formData.append("persona", data.persona);
         formData.append("file_input", data.file_input[0]);
-        console.log("USING caso: " + data.caso + " as " + formData.get("caso"));
+        //console.log("USING caso: " + data.caso + " as " + formData.get("caso"));
+        //console.log("USING file: " + data.file_input[0] + " as " + formData.get("file_input"));
         addFileDocument(formData);
      };
 
