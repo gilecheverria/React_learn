@@ -3,9 +3,13 @@
     <title>File upload</title>
 </head>
 <body>
-    <form action="/upload" enctype="multipart/form-data" method="POST"> 
+    <form action="/upload" enctype="multipart/form-data" method="POST">
+        <label>Storage name:</label>
         <input type="text" name="nombre" />
+        <br>
+        <label>Select file:</label>
         <input type="file" name="myFile" />
+        <br>
         <input type="submit" value="Upload a file"/>
      </form>
 
