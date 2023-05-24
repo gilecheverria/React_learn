@@ -40,3 +40,8 @@ Rulo recommended:
 ## Linter (following a coding style)
 - https://eslint.org/
 - https://medium.com/@khriztianmoreno/configuraci%C3%B3n-de-eslint-usando-la-gu%C3%ADa-de-estilo-react-jsx-de-airbnb-c07ce3dcb072
+
+## Cross Origin Resource Sharing (CORS)
+- https://www.stackhawk.com/blog/what-is-cors/
+- https://www.stackhawk.com/blog/react-cors-guide-what-it-is-and-how-to-enable-it/
+- https://stackoverflow.com/questions/66188972/react-app-with-cross-origin-request-blocked-to-localhost
