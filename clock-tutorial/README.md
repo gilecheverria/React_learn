@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## GEF NOTES
+
+Not working at the moment. Probably very **outdated**
+
 ## Available Scripts
 
 In the project directory, you can run:
