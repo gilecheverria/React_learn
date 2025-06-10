@@ -17,7 +17,7 @@
     "express-session": "^1.17.3",
     "mongo-connect": "^0.0.6",
     "mongodb": "^4.10.0",
-    "multer": "^1.4.5-lts.1",
+    "multer": "^2.0.1",
     "winston": "^3.8.2"
   }
 }
