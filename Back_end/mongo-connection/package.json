@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "express": "^4.22.0",
     "express-fileupload": "^1.4.0",
     "mongodb": "^4.9.1"
   },
